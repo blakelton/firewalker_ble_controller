@@ -1,0 +1,11 @@
+### PlatformIO ###
+.pioenvs
+.piolibdeps
+.clang_complete
+.gcc-flags.json
+.pio
+
+### Circuit Python Files ###
+circuit_python/firmware/v7/adafruit-circuitpython-bundle-7.x-mpy-20221228/adafruit-circuitpython-bundle-7.x-mpy-20221228/
+circuit_python/firmware/v9/adafruit-circuitpython-bundle-9.x-mpy-20250119/adafruit-circuitpython-bundle-9.x-mpy-20250119/
+platform/.vscode/
