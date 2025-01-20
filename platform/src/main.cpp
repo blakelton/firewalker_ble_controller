@@ -177,7 +177,7 @@ void setup()
     Serial.println(BLE.address());
 
     // set advertised local name and service UUID:
-    BLE.setLocalName("LED");
+    BLE.setLocalName("FireWalker");
     BLE.setAdvertisedService(ledService);
 
     // add the characteristic to the service
@@ -247,5 +247,9 @@ void loop()
                 }
             }
         }
+    }
+    else
+    {
+      theaterChaseRainbow(20);
     }
 }
