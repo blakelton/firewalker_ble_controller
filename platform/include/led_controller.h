@@ -9,32 +9,50 @@
  * License: MIT License
  ***********************************************************************/
 #include <Adafruit_NeoPixel.h>
-#include "i_led_controller.h"
 
 // This project uses D0 to handle addressible RGB communication
 #define LED_PIN D0
 #define LED_COUNT 24
 
+enum class LEDMode {
+    LEDOff,
+    Carousel,
+    ColorWipe,
+    TheaterChase,
+    Wheel,
+    Rainbow,
+    TheaterChaseRainbow
+};
+
 class LEDController
 {
 public:
     LEDController();
-    virtual bool begin() override;
-    virtual bool setMode() override;
+    void begin();
+    void setMode(LEDMode mode);
+    void update();
 
 private:
     Adafruit_NeoPixel _pixels;           // Instance of neopixels object
-    unsigned long pixelPrevious;        // Previous Pixel Millis
-    unsigned long patternPrevious;      // Previous Pattern Millis
-    int           patternCurrent;       // Current Pattern Number
-    int           patternInterval;      // Pattern Interval (ms)
-    bool          patternComplete;      // Pattern State
-    int           pixelInterval;        // Pixel Interval (ms)
-    int           pixelQueue;           // Pattern Pixel Queue
-    int           pixelCycle;           // Pattern Pixel Cycle
-    uint16_t      pixelNumber;          // Total Number of Pixels
+    unsigned long _pixelPrevious;        // Previous Pixel Millis
+    unsigned long _patternPrevious;      // Previous Pattern Millis
+    int           _patternCurrent;       // Current Pattern Number
+    int           _patternInterval;      // Pattern Interval (ms)
+    bool          _patternComplete;      // Pattern State
+    int           _pixelInterval;        // Pixel Interval (ms)
+    int           _pixelQueue;           // Pattern Pixel Queue
+    int           _pixelCycle;           // Pattern Pixel Cycle
+    uint16_t      _pixelNumber;          // Total Number of Pixels
+
+    // The current animation mode selected
+    LEDMode _previousMode;
+    LEDMode _currentMode;
 
     void colorWipe(uint32_t color, int wait);
+    void theaterChase(uint32_t color, int wait);
+    uint32_t wheel(byte wheelPos);
+    void rainbow(uint8_t wait);
+    void theaterChaseRainbow(uint8_t wait);
 
 };
 

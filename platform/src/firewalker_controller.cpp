@@ -1,7 +1,7 @@
 /***********************************************************************
  * File Name: firewalker_controller.cpp
  * Author(s): Blake Azuela
- * Date Created: 2024-05-06
+ * Date Created: 2025-02-01
  * Description: Header file for the FireWalkerController class.
  * License: MIT License
  ***********************************************************************/
@@ -26,13 +26,43 @@ FireWalkerController::FireWalkerController(std::shared_ptr<BLEController> ble,
 bool FireWalkerController::init()
 {
     bool bleInitialized = _bleController->begin();
-    bool ledInitialized = _ledController->begin();
+    _ledController->begin();
 
-    return (bleInitialized && ledInitialized);
+    // Registering the callback from BLEController to handle mode changes
+    _bleController->setModeChangedCallback([this](int mode){
+    LEDMode newMode;
+    //TODO: Make proper mapping from mobile app side
+    switch (mode)
+    {
+    case 0: 
+        newMode = LEDMode::LEDOff;
+        break;
+    case 1: 
+        newMode = LEDMode::ColorWipe;
+        break;
+    case 2: 
+        newMode = LEDMode::TheaterChase;
+        break;
+    case 3: 
+        newMode = LEDMode::Wheel;
+        break;
+    case 4: 
+        newMode = LEDMode::Rainbow;
+        break;
+    default:
+        newMode = LEDMode::Carousel;
+        break;
+    }
+    Serial.println("Setting LED mode to:");
+    Serial.println(mode);
+    // TODO: once proper mapping is set update this line
+    // _ledController->setMode(newMode);
+    _ledController->setMode(LEDMode::Rainbow);
+    });
+    return (bleInitialized);
 }
 
-bool FireWalkerController::setLEDMode()
+void FireWalkerController::update()
 {
-    //TODO
-    return _ledController->setMode();
+    _ledController->update();
 }

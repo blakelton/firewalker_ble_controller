@@ -10,12 +10,29 @@
  ***********************************************************************/
 
 #include <ArduinoBLE.h>
-#include "i_ble_controller.h"
+#include <string>
+#include <functional>
 
 class BLEController
 {
+public:
+    BLEController();
+    bool begin();
+    //Callback for when a new mode is recieved
+    void setModeChangedCallback(std::function<void(int)> callback);
+
+private:
+    BLEService _bleService;
+    BLEByteCharacteristic _ledCharacteristic;
+    std::string _advertisingName;
     bool isRunning;
-    virtual bool begin() override;
+
+    // callback for mode
+    std::function<void(int)> _modeChangedCallback;
+
+    // static event handler function and pointer
+    static BLEController* instance;
+    static void onCharacteristicWritten(BLEDevice central, BLECharacteristic characteristic);
 };
 
 #endif // BLECONTROLLER_H
