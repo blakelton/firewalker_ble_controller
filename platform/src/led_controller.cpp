@@ -8,7 +8,19 @@
 
 #include "led_controller.h"
 
-LEDController::LEDController(uint16_t pixelCount, uint16_t pinNumber){
-    pixels = new Adafruit_NeoPixel(pixelCount, pinNumber, NEO_GRB + NEO_KHZ800)
+LEDController::LEDController()
+: _pixels(LED_PIN, LED_COUNT, NEO_GRB + NEO_KHZ800)
+{
+}
 
+
+bool LEDController::begin()
+{
+    _pixels.begin();
+    retrun true;
+}
+
+bool LEDController::setMode()
+{
+    return true;
 }

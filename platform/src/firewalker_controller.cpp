@@ -7,6 +7,8 @@
  ***********************************************************************/
 
 #include "firewalker_controller.h"
+#include "ble_controller.h"
+#include "led_controller.h"
 
 FireWalkerController::FireWalkerController()
 {
@@ -15,9 +17,9 @@ FireWalkerController::FireWalkerController()
     _ledController = std::make_shared<LEDController>();
 }
 
-FireWalkerController::FireWalkerController(std::shared_ptr<BLEController> bleController,
-                                           std::shared_ptr<LEDController> ledController)
-: _bleController(bleController), _ledController(ledController)
+FireWalkerController::FireWalkerController(std::shared_ptr<BLEController> ble,
+                                           std::shared_ptr<LEDController> led)
+: _bleController(ble), _ledController(led)
 {
 }
 

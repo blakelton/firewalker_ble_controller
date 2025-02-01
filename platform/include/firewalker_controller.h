@@ -10,14 +10,14 @@
  ***********************************************************************/
 
 #include <memory>
-#include "ble_controller.h"
-#include "led_controller.h"
+#include "i_ble_controller.h"
+#include "i_led_controller.h"
 
 class FireWalkerController {
 public:
     FireWalkerController();
-    FireWalkerController(std::shared_ptr<BLEController> bleController,
-                         std::shared_ptr<LEDController> ledController);
+    FireWalkerController(std::shared_ptr<IBLEController> ble,
+                         std::shared_ptr<ILEDController> led);
 
     // Initialize the FireWalkerController 
     bool init();
@@ -25,8 +25,8 @@ public:
 
 private:
     //Subsystem Controllers
-    std::shared_ptr<BLEController> _bleController;
-    std::shared_ptr<LEDController> _ledController;
-}
+    std::shared_ptr<IBLEController> _bleController;
+    std::shared_ptr<ILEDController> _ledController;
+};
 
 #endif // FIREWALKERCONTROLLER_H

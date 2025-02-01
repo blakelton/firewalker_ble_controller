@@ -10,10 +10,12 @@
  ***********************************************************************/
 
 #include <ArduinoBLE.h>
+#include "i_ble_controller.h"
 
 class BLEController
 {
     bool isRunning;
-}
+    virtual bool begin() override;
+};
 
 #endif // BLECONTROLLER_H
