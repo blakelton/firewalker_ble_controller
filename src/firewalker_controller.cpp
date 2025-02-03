@@ -35,34 +35,33 @@ bool FireWalkerController::init()
     switch (mode)
     {
     case 0: 
+        Serial.println("Setting LED Off");
         newMode = LEDMode::LEDOff;
         break;
     case 1: 
+        Serial.println("Setting Color Wipe");
         newMode = LEDMode::ColorWipe;
         break;
     case 2: 
+        Serial.println("Setting Theater Chase");
         newMode = LEDMode::TheaterChase;
         break;
     case 3: 
-        newMode = LEDMode::Wheel;
-        break;
-    case 4: 
+        Serial.println("Setting Rainbow");
         newMode = LEDMode::Rainbow;
         break;
     default:
+        Serial.println("Setting Default Mode - Carousel");
         newMode = LEDMode::Carousel;
         break;
     }
-    Serial.println("Setting LED mode to:");
-    Serial.println(mode);
-    // TODO: once proper mapping is set update this line
-    // _ledController->setMode(newMode);
-    _ledController->setMode(LEDMode::Rainbow);
+    _ledController->setMode(newMode);
     });
     return (bleInitialized);
 }
 
 void FireWalkerController::update()
 {
+    _bleController->update();
     _ledController->update();
 }

@@ -19,19 +19,12 @@ enum class LEDMode {
     Carousel,
     ColorWipe,
     TheaterChase,
-    Wheel,
     Rainbow,
     TheaterChaseRainbow
 };
 
 class LEDController
 {
-public:
-    LEDController();
-    void begin();
-    void setMode(LEDMode mode);
-    void update();
-
 private:
     Adafruit_NeoPixel _pixels;           // Instance of neopixels object
     unsigned long _pixelPrevious;        // Previous Pixel Millis
@@ -54,6 +47,11 @@ private:
     void rainbow(uint8_t wait);
     void theaterChaseRainbow(uint8_t wait);
 
+public:
+    LEDController();
+    void begin();
+    void setMode(LEDMode mode);
+    void update();
 };
 
 #endif // LEDCONTROLLER_H
