@@ -18,6 +18,7 @@ class BLEController
 public:
     BLEController();
     bool begin();
+    void update();
     //Callback for when a new mode is recieved
     void setModeChangedCallback(std::function<void(int)> callback);
 

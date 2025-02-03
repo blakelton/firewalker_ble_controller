@@ -13,8 +13,6 @@
 
 
 // TODO: Make these global singltons
-std::shared_ptr<BLEController> bleCtrl;
-std::shared_ptr<LEDController> ledCtrl;
 std::shared_ptr<FireWalkerController> fwCtrl;
 
 void setup()
@@ -23,9 +21,7 @@ void setup()
     Serial.begin(115200);
 
     // Creating Controller Classes
-    bleCtrl = std::make_shared<BLEController>();
-    ledCtrl = std::make_shared<LEDController>();
-    fwCtrl = std::make_shared<FireWalkerController>(bleCtrl, ledCtrl);
+    fwCtrl = std::make_shared<FireWalkerController>();
 
     // Initialize the controller classes
     bool ok = fwCtrl->init();
@@ -42,9 +38,6 @@ void setup()
 
 void loop()
 {  
-    // Process BLE events
-    // BLE.poll();
-
-    // Update LED animations
+    // Update the controller classes
     fwCtrl->update();
 }

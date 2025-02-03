@@ -75,3 +75,11 @@ void BLEController::onCharacteristicWritten(BLEDevice central, BLECharacteristic
             }
         }
 }
+
+void BLEController::update()
+{
+    if(isRunning)
+    {
+        BLE.poll();
+    }
+}

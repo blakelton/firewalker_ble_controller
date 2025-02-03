@@ -1,29 +1,38 @@
 /***********************************************************************
- * File Name: led_controller.h
+ * File Name: led_controller.cpp
  * Author(s): Blake Azuela
  * Date Created: 2024-05-06
- * Description: Header file for the LEDController class.
+ * Description: Source file for the LEDController class.
  * License: MIT License
  ***********************************************************************/
 
 #include "led_controller.h"
 
 LEDController::LEDController()
-: _pixels(LED_PIN, LED_COUNT, NEO_GRB + NEO_KHZ800),
-  _pixelPrevious(0), _patternPrevious(0),
-  _patternCurrent(0), _patternInterval(50),
-  _patternComplete(false), _pixelInterval(50),
-  _pixelQueue(0), _pixelCycle(0),
-  _pixelNumber(LED_COUNT),
-  _currentMode(LEDMode::Carousel), // Default mode
-  _previousMode(LEDMode::LEDOff)
+:   _pixelPrevious(0),
+    _patternPrevious(0),
+    _patternCurrent(0),
+    _patternInterval(5000),
+    _patternComplete(false),
+    _pixelInterval(50),
+    _pixelQueue(0),
+    _pixelCycle(0),
+    _pixelNumber(LED_COUNT),
+    _previousMode(LEDMode::LEDOff),
+    _currentMode(LEDMode::Rainbow)
 {
+    _pixels = Adafruit_NeoPixel(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+    pinMode(LED_PIN, OUTPUT);
+    digitalWrite(LED_PIN, LOW);
+    Serial.println("LED Controller Initialized");
 }
 
 
 void LEDController::begin()
 {
-    _pixels.begin();
+    _pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+    _pixels.clear();  // Initialize all pixels to 'off'
+    _pixels.show();  // Turn OFF all pixels 
 }
 
 void LEDController::setMode(LEDMode mode)
@@ -42,25 +51,30 @@ void LEDController::update()
     switch (_currentMode)
     {
         case LEDMode::LEDOff:
-            // TODO: Turn all the leds off
+            Serial.println("LED Mode: Off");
+            _pixels.clear();
+            _pixels.show();
             break;
         case LEDMode::ColorWipe:
+            Serial.println("LED Mode: Color Wipe");
             colorWipe(_pixels.Color(255,0,0), 50);
             break;
         case LEDMode::TheaterChase:
-            theaterChase(_pixels.Color(0,255,0), 50);
-            break;
-        case LEDMode::Wheel:
-            wheel(_pixels.Color(255,255,0));
+            Serial.println("LED Mode: Theater Chase");
+            theaterChase(_pixels.Color(127,127,127), 50);
             break;
         case LEDMode::Rainbow:
+            Serial.println("LED Mode: Rainbow");
             rainbow(50);
             break;       
         case LEDMode::TheaterChaseRainbow:
+            Serial.println("LED Mode: Theater Chase Rainbow");
             theaterChaseRainbow(50);
             break;      
         default:
-            //TODO create Carousel Effect
+            //TODO create Carousel Effect - for now, default to TheaterChaseRainbow
+            Serial.println("Default Mode");
+            theaterChaseRainbow(50);
             break;
     }
     _previousMode = _currentMode;
@@ -140,7 +154,7 @@ uint32_t LEDController::wheel(byte wheelPos)
 void LEDController::rainbow(uint8_t wait) 
 {
     if(_pixelInterval != wait) _pixelInterval = wait;                   
-    for(uint16_t i=0; i < _pixelInterval; i++) 
+    for(uint16_t i=0; i < _pixelNumber; i++) 
     {
         _pixels.setPixelColor(i, this->wheel((i + _pixelCycle) & 255)); //  Update delay time  
     }
